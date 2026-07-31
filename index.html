@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Flary Bird</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="game-wrap">
+    <canvas id="game" width="480" height="640"></canvas>
+
+    <!-- START / SETTINGS SCREEN -->
+    <div id="start-screen" class="overlay">
+      <h1>Flary Bird</h1>
+
+      <div class="bird-preview-box">
+        <canvas id="bird-preview" width="120" height="120"></canvas>
+      </div>
+
+      <div class="section">
+        <p class="label">Chọn màu chim</p>
+        <div id="color-picker" class="swatches"></div>
+      </div>
+
+      <div class="section">
+        <p class="label">Ảnh đại diện</p>
+        <div class="avatar-row">
+          <label class="btn secondary" for="avatar-input">Tải ảnh lên</label>
+          <input type="file" id="avatar-input" accept="image/*" hidden />
+          <button id="avatar-clear" class="btn secondary">Xóa ảnh</button>
+        </div>
+      </div>
+
+      <button id="start-btn" class="btn primary">Chơi</button>
+      <p class="hint">Nhấn Space / Click / Chạm để bay</p>
+    </div>
+
+    <!-- GAME OVER SCREEN -->
+    <div id="gameover-screen" class="overlay hidden">
+      <h2>Bạn đã thua!</h2>
+      <p class="score-line">Điểm: <span id="final-score">0</span></p>
+      <p class="score-line best">Kỷ lục: <span id="best-score">0</span></p>
+      <button id="retry-btn" class="btn primary">Chơi lại</button>
+      <button id="menu-btn" class="btn secondary">Đổi chim</button>
+    </div>
+
+    <!-- IN-GAME HUD -->
+    <div id="score-hud" class="hidden">0</div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
