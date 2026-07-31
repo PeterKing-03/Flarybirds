@@ -135,52 +135,98 @@
     ctx.lineWidth = 1.5;
     ctx.stroke();
 
-    // head / avatar area
-    const headR = radius * 0.62;
-    const headX = radius * 0.15;
-    const headY = -radius * 0.45;
+    // bird's own eye (always shown)
+    const eyeX = radius * 0.35;
+    const eyeY = -radius * 0.35;
+    const eyeR = radius * 0.22;
+    ctx.beginPath();
+    ctx.arc(eyeX, eyeY, eyeR, 0, Math.PI * 2);
+    ctx.fillStyle = "#fff";
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(eyeX + eyeR * 0.35, eyeY, eyeR * 0.5, 0, Math.PI * 2);
+    ctx.fillStyle = "#2c2c2c";
+    ctx.fill();
 
+    // rider on top of the bird (only once an avatar photo is uploaded)
     if (avatarImg) {
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(headX, headY, headR, 0, Math.PI * 2);
-      ctx.clip();
-      // cover-fit the avatar image into the circle
-      const iw = avatarImg.width;
-      const ih = avatarImg.height;
-      const size = Math.min(iw, ih);
-      const sx = (iw - size) / 2;
-      const sy = (ih - size) / 2;
-      ctx.drawImage(
-        avatarImg,
-        sx,
-        sy,
-        size,
-        size,
-        headX - headR,
-        headY - headR,
-        headR * 2,
-        headR * 2
-      );
-      ctx.restore();
-      ctx.beginPath();
-      ctx.arc(headX, headY, headR, 0, Math.PI * 2);
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = "#fff";
-      ctx.stroke();
-    } else {
-      // default eye
-      ctx.beginPath();
-      ctx.arc(headX + headR * 0.35, headY, headR * 0.4, 0, Math.PI * 2);
-      ctx.fillStyle = "#fff";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(headX + headR * 0.5, headY, headR * 0.2, 0, Math.PI * 2);
-      ctx.fillStyle = "#2c2c2c";
-      ctx.fill();
+      drawRider(ctx, radius, color, avatarImg);
     }
 
     ctx.restore();
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  // draws a small rider sitting on the bird's back, called from inside
+  // drawBird's already-translated/rotated context so it moves with the bird
+  function drawRider(ctx, radius, birdColor, avatarImg) {
+    const hipY = -radius * 0.85;
+    const legX = radius * 0.55;
+    const footY = -radius * 0.05;
+    const shoulderY = hipY - radius * 0.5;
+    const headR = radius * 0.4;
+    const headY = shoulderY - headR * 1.05;
+
+    // legs straddling the bird's back
+    ctx.strokeStyle = "#3d3d3d";
+    ctx.lineWidth = Math.max(2, radius * 0.22);
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(0, hipY);
+    ctx.lineTo(-legX, footY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, hipY);
+    ctx.lineTo(legX, footY);
+    ctx.stroke();
+
+    // torso
+    ctx.fillStyle = "#f4f4f4";
+    ctx.strokeStyle = shade(birdColor, -40);
+    ctx.lineWidth = 2;
+    roundRect(ctx, -radius * 0.32, shoulderY, radius * 0.64, hipY - shoulderY, radius * 0.18);
+    ctx.fill();
+    ctx.stroke();
+
+    // arms raised up beside the head
+    ctx.strokeStyle = "#f4f4f4";
+    ctx.lineWidth = Math.max(2, radius * 0.16);
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(-radius * 0.28, shoulderY + radius * 0.1);
+    ctx.lineTo(-radius * 0.58, headY + radius * 0.15);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(radius * 0.28, shoulderY + radius * 0.1);
+    ctx.lineTo(radius * 0.58, headY + radius * 0.15);
+    ctx.stroke();
+
+    // head with the uploaded avatar as the face
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(0, headY, headR, 0, Math.PI * 2);
+    ctx.clip();
+    const iw = avatarImg.width;
+    const ih = avatarImg.height;
+    const size = Math.min(iw, ih);
+    const sx = (iw - size) / 2;
+    const sy = (ih - size) / 2;
+    ctx.drawImage(avatarImg, sx, sy, size, size, -headR, headY - headR, headR * 2, headR * 2);
+    ctx.restore();
+    ctx.beginPath();
+    ctx.arc(0, headY, headR, 0, Math.PI * 2);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#fff";
+    ctx.stroke();
   }
 
   // ---------- Preview canvas ----------
@@ -191,9 +237,9 @@
     previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
     drawBird(
       previewCtx,
-      previewCanvas.width / 2 - 8,
-      previewCanvas.height / 2 + 4,
-      42,
+      previewCanvas.width / 2 - 6,
+      previewCanvas.height / 2 + 20,
+      34,
       0,
       state.color,
       state.avatarImg
