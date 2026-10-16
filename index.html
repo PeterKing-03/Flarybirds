@@ -3,50 +3,42 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#f4efe6" />
 <title>Flary Bird</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="game-wrap">
-    <canvas id="game" width="480" height="640"></canvas>
+    <canvas id="game"></canvas>
 
-    <!-- START / SETTINGS SCREEN -->
+    <button id="sound-btn" class="icon-btn" aria-label="Bật/tắt âm thanh"></button>
+
+    <!-- START SCREEN -->
     <div id="start-screen" class="overlay">
-      <h1>Flary Bird</h1>
-
-      <div class="bird-preview-box">
-        <canvas id="bird-preview" width="120" height="120"></canvas>
+      <div class="menu">
+        <h1>flary</h1>
+        <div id="color-picker" class="swatches" role="radiogroup" aria-label="Màu chim"></div>
+        <button id="start-btn" class="btn primary">Chơi</button>
+        <p class="hint">Space · Click · Chạm</p>
       </div>
-
-      <div class="section">
-        <p class="label">Chọn màu chim</p>
-        <div id="color-picker" class="swatches"></div>
-      </div>
-
-      <div class="section">
-        <p class="label">Ảnh đại diện</p>
-        <div class="avatar-row">
-          <label class="btn secondary" for="avatar-input">Tải ảnh lên</label>
-          <input type="file" id="avatar-input" accept="image/*" hidden />
-          <button id="avatar-clear" class="btn secondary">Xóa ảnh</button>
-        </div>
-      </div>
-
-      <button id="start-btn" class="btn primary">Chơi</button>
-      <p class="hint">Nhấn Space / Click / Chạm để bay</p>
     </div>
 
     <!-- GAME OVER SCREEN -->
     <div id="gameover-screen" class="overlay hidden">
-      <h2>Bạn đã thua!</h2>
-      <p class="score-line">Điểm: <span id="final-score">0</span></p>
-      <p class="score-line best">Kỷ lục: <span id="best-score">0</span></p>
-      <button id="retry-btn" class="btn primary">Chơi lại</button>
-      <button id="menu-btn" class="btn secondary">Đổi chim</button>
+      <div class="card">
+        <p class="card-label">Điểm</p>
+        <p id="final-score" class="card-score">0</p>
+        <p id="new-best" class="badge hidden">Kỷ lục mới</p>
+        <p class="card-best">Kỷ lục <span id="best-score">0</span></p>
+        <div class="card-actions">
+          <button id="retry-btn" class="btn primary">Chơi lại</button>
+          <button id="menu-btn" class="btn ghost">Menu</button>
+        </div>
+      </div>
     </div>
-
-    <!-- IN-GAME HUD -->
-    <div id="score-hud" class="hidden">0</div>
   </div>
 
   <script src="game.js"></script>
