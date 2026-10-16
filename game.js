@@ -536,7 +536,7 @@
       ctx.translate(W / 2, 78);
       ctx.scale(scale, scale);
       ctx.fillStyle = rgb(palette.ink);
-      ctx.font = '700 64px "Outfit", "Segoe UI", sans-serif';
+      ctx.font = '700 64px "Be Vietnam Pro", "Segoe UI", sans-serif';
       ctx.fillText(score, 0, 0);
       ctx.restore();
     }
@@ -544,7 +544,7 @@
     if (s === "ready") {
       ctx.globalAlpha = 0.55 + Math.sin(time * 0.1) * 0.35;
       ctx.fillStyle = rgb(palette.ink);
-      ctx.font = '500 18px "Outfit", "Segoe UI", sans-serif';
+      ctx.font = '500 18px "Be Vietnam Pro", "Segoe UI", sans-serif';
       ctx.fillText("Chạm để bay", W / 2, H * 0.62);
       ctx.globalAlpha = 1;
     }
